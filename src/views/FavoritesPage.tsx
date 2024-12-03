@@ -1,5 +1,35 @@
-export const FavoritesPage = () => {
+import { useMemo } from "react"
+import { DrinkCard } from "../components/DrinkCard"
+import { useAppStore } from "../stores/useAppStore"
+
+const FavoritesPage = () => {
+
+  const favorites = useAppStore((state) => state.favorites)
+  const hasFavorites = useMemo(()=> favorites.length , [favorites])
+
   return (
-    <div>Favoritos</div>
+    <>
+      <h1 className="text-6xl font-extrabold">Favoritos</h1>
+      {
+        hasFavorites ?
+          (<div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-5 my-10 gap-10">
+          {
+            favorites.map(recipe => (
+              <DrinkCard 
+                key={recipe.idDrink}
+                drink={recipe}
+              />
+            ))
+          }
+        </div>) :
+        (
+          <p className="my-10 text-center text-2xl">
+            Los favoritos se mostraran aqui
+          </p>
+        )
+      }
+    </>
   )
 }
+
+export default FavoritesPage
